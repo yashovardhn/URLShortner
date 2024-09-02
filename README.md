@@ -1,117 +1,114 @@
-# URL Shortener
+```markdown
+# URL Shortener API
 
-A simple and efficient URL shortening service built with Python and Flask. This project allows users to convert long URLs into shorter, manageable links, making it easier to share and track URLs.
-
-## Table of Contents
-
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Installation](#installation)
-- [Usage](#usage)
-- [API Endpoints](#api-endpoints)
-- [Database Schema](#database-schema)
-- [Contributing](#contributing)
-- [License](#license)
+This project implements a simple URL shortener API using Django and PostgreSQL. It provides endpoints to shorten long URLs and redirect users to the original URLs using short codes.
 
 ## Features
 
-- **Shorten URLs**: Easily convert long URLs into short links.
-- **Redirect**: Users can be redirected to the original URL using the shortened link.
-- **Database Storage**: Stores shortened URLs and their corresponding original URLs in a database.
-- **User-Friendly Interface**: Simple web interface for easy interaction.
+- Shorten a long URL and receive a short URL.
+- Redirect to the original URL using the short code.
+- Store the URL mappings in a PostgreSQL database.
 
-## Technologies Used
+## Endpoints
 
-- **Python**: Programming language used for backend development.
-- **Flask**: Micro web framework for building the web application.
-- **SQLite**: Lightweight database for storing URL mappings.
-- **HTML/CSS**: For the frontend design.
+### POST `/shorten/`
 
-## Installation
+- **Description**: Accepts a long URL and returns a shortened URL.
+- **Request Body**:
+  ```json
+  {
+    "long_url": "https://www.example.com/some/very/long/url"
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "short_url": "http://localhost:8000/abc123"
+  }
+  ```
 
-1. **Clone the repository**:
+### GET `/{short_code}`
+
+- **Description**: Redirects to the original URL corresponding to the provided short code.
+- **Response**: Redirects to the long URL or returns a 404 error if the short code does not exist.
+
+## Project Structure
+
+```
+url_shortener/
+├── manage.py
+├── url_shortener/
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── wsgi.py
+└── shortener/
+    ├── migrations/
+    ├── __init__.py
+    ├── admin.py
+    ├── apps.py
+    ├── models.py
+    ├── tests.py
+    ├── urls.py
+    └── views.py
+```
+
+- `url_shortener/`: Main project directory.
+- `manage.py`: Command-line utility for Django project management.
+- `url_shortener/`: Directory containing project settings and configuration.
+  - `settings.py`: Configuration settings, including database settings.
+  - `urls.py`: URL routing for the project.
+- `shortener/`: Django app for the URL shortener functionality.
+  - `migrations/`: Directory for database migrations.
+  - `models.py`: Database models for storing URL mappings.
+  - `views.py`: Logic for handling API requests.
+  - `urls.py`: URL routing for the shortener app.
+
+## How to Run the Project
+
+1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yashovardhn/URLShortner.git
+   git clone https://github.com/yourusername/url_shortener.git
+   cd url_shortener
    ```
 
-2. **Navigate to the project directory**:
+2. **Set Up a Virtual Environment (optional)**:
    ```bash
-   cd URLShortner
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
    ```
 
-3. **Install the required packages**:
+3. **Install Dependencies**:
    ```bash
-   pip install -r requirements.txt
+   pip install django psycopg2
    ```
 
-4. **Run the application**:
+4. **Configure Database**:
+   - Update the `DATABASES` setting in `url_shortener/settings.py` with your PostgreSQL credentials.
+
+5. **Run Migrations**:
    ```bash
-   python app.py
+   python manage.py makemigrations
+   python manage.py migrate
    ```
 
-5. **Access the application**: Open your browser and go to `http://localhost:5000`.
+6. **Start the Development Server**:
+   ```bash
+   python manage.py runserver
+   ```
 
-## Usage
+7. **Test the API**:
+   - Use Postman or CURL to test the endpoints.
 
-1. **Shortening a URL**:
-   - Enter the long URL you wish to shorten in the input field.
-   - Click the "Shorten" button.
-   - Copy the generated short URL.
+## Contribution
 
-2. **Redirecting to the original URL**:
-   - Paste the short URL into your browser's address bar.
-   - You will be redirected to the original long URL.
-
-## API Endpoints
-
-- **POST /shorten**
-  - **Description**: Shortens a given URL.
-  - **Request Body**: 
-    ```json
-    {
-      "long_url": "https://example.com/some/very/long/url"
-    }
-    ```
-  - **Response**:
-    ```json
-    {
-      "short_url": "http://localhost:5000/abc123"
-    }
-    ```
-
-- **GET /<short_url>**
-  - **Description**: Redirects to the original URL.
-  - **Response**: Redirects to the long URL associated with the provided short URL.
-
-## Database Schema
-
-The database consists of a simple table to store the URL mappings:
-
-| Column Name  | Data Type | Description                           |
-|--------------|-----------|---------------------------------------|
-| id           | INTEGER   | Primary key, auto-incremented        |
-| long_url     | TEXT      | The original long URL                 |
-| short_url    | TEXT      | The generated short URL               |
-| created_at   | DATETIME  | Timestamp of when the URL was created|
-
-## Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request for any enhancements or bug fixes. 
-
-### Steps to Contribute
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/YourFeature`).
-3. Make your changes.
-4. Commit your changes (`git commit -m 'Add some feature'`).
-5. Push to the branch (`git push origin feature/YourFeature`).
-6. Open a pull request.
+Feel free to fork this repository and submit pull requests with improvements or bug fixes.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
 ```
 
-Feel free to modify any sections as needed for your project! This README provides a thorough overview of the project, installation instructions, usage, API endpoints, and contribution guidelines.
+You can save this content in a `.md` file for your project documentation. Let me know if you need any changes or additional sections!
 
 Sources
